@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router";
 import Root from "../Root/Root";
 import Home from "../Component/Home";
+import Login from "../Component/Login";
 
 export const router = createBrowserRouter([
     {
@@ -11,6 +12,10 @@ export const router = createBrowserRouter([
               index: true,
               Component: Home,
             },
+            {
+                path:"/login",
+                Component: Login
+            }
         ]
     }
 ])
