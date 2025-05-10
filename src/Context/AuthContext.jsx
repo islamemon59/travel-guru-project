@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AuthProvider } from './CreateContext';
 
 
 const AuthContext = ({children}) => {
 
+    const [user, setUser] = useState(null)
+    const [loading, setLoading] = useState(true)
+
     const userInfo = {
-        name: "name"
+        user,
+        setUser,
+        loading,
+        setLoading,
     }
 
     return (
