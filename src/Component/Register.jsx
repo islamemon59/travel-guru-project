@@ -1,16 +1,41 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router';
+import React, { use, useState } from "react";
+import { Link } from "react-router";
+import { AuthProvider } from "../Context/CreateContext";
 
 const Register = () => {
-        const [nameError, setNameError] = useState("")
-    return (
+  const [nameError, setNameError] = useState("");
+  const {registerUser, setUser} = use(AuthProvider)
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const name = form.name.value;
+    if (name.length < 5) {
+      setNameError("Name should be more then 5 character");
+      return;
+    }
+    const photo = form.photo.value;
+    const email = form.email.value;
+    const password = form.password.value;
+
+    registerUser(email, password)
+    .then(result => {
+        const currentUser = result.user
+        setUser(currentUser)
+    }).catch(error => {
+        setNameError(error.message)
+    })
+
+  };
+
+  return (
     <div className="flex justify-center items-center mt-16">
       <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl p-4">
         <div className="card-body">
           <h1 className="text-2xl text-center font-bold">
             Register your account
           </h1>
-          <form className="fieldset space-y-1">
+          <form onSubmit={handleRegister} className="fieldset space-y-1">
             <label className="label">Your Name</label>
             <input
               name="name"
@@ -19,9 +44,7 @@ const Register = () => {
               placeholder="Enter your name"
               required
             />
-            {
-                nameError && <p className="text-xs text-secondary">{nameError}</p>
-            }
+            {nameError && <p className="text-xs text-secondary">{nameError}</p>}
             <label className="label">Phot URL</label>
             <input
               name="photo"
@@ -53,6 +76,12 @@ const Register = () => {
             <button type="submit" className="btn btn-neutral mt-4">
               Register
             </button>
+            <button type="submit" className="btn mt-4 px-1 rounded-full"><img className="w-6" src="images/google.png" alt="" />
+              <p>SingUp with google</p>
+            </button>
+            <button type="submit" className="btn mt-4 px-1 rounded-full"><img className="w-6" src="images/fb.png" alt="" />
+              <p>Continue with Google</p>
+            </button>
             <p className="font-semibold text-center pt-5">
               Already Have An Account ?{" "}
               <Link className="text-indigo-500" to="/login">
@@ -63,7 +92,7 @@ const Register = () => {
         </div>
       </div>
     </div>
-    );
+  );
 };
 
 export default Register;
