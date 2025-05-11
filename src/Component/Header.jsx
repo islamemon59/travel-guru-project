@@ -3,7 +3,7 @@ import { Link, NavLink } from "react-router";
 import { AuthProvider } from "../Context/CreateContext";
 
 const Header = () => {
-  const { user } = use(AuthProvider);
+  const { user, signOutUser } = use(AuthProvider);
   console.log(user?.photoURL);
   const links = (
     <>
@@ -21,6 +21,15 @@ const Header = () => {
       </li>
     </>
   );
+
+  const handleSignOut = () => {
+    signOutUser().then(() => {
+      alert("Successfully Logout")
+    }).catch(error => {
+      console.log(error)
+    })
+  }
+
   return (
     <nav>
       <div className="navbar bg-transparent py-4 montserrat">
@@ -78,17 +87,8 @@ const Header = () => {
                 tabIndex={0}
                 className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
               >
-                <li>
-                  <a className="justify-between">
-                    Profile
-                    <span className="badge">New</span>
-                  </a>
-                </li>
-                <li>
-                  <a>Settings</a>
-                </li>
-                <li>
-                  <a>Logout</a>
+                <li onClick={handleSignOut}>
+                  <Link to="/login">Logout</Link>
                 </li>
               </ul>
             </div>
