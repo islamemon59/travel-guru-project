@@ -1,7 +1,10 @@
-import React from "react";
+import React, { use } from "react";
 import { Link, NavLink } from "react-router";
+import { AuthProvider } from "../Context/CreateContext";
 
 const Header = () => {
+  const { user } = use(AuthProvider);
+  console.log(user?.photoURL);
   const links = (
     <>
       <li>
@@ -47,13 +50,53 @@ const Header = () => {
               {links}
             </ul>
           </div>
-          <a className="btn btn-ghost text-xl"><img className="w-28" src="logo.png" alt="logo" /></a>
+          <a className="btn btn-ghost text-xl">
+            <img className="w-28" src="logo.png" alt="logo" />
+          </a>
         </div>
         <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal px-1 gap-4 text-[16px]">{links}</ul>
+          <ul className="menu menu-horizontal px-1 gap-4 text-[16px]">
+            {links}
+          </ul>
         </div>
         <div className="navbar-end">
-          <Link to="/login" className="btn bg-[#F9A51A]">Login</Link>
+          {user ? (
+            <div className="dropdown dropdown-end">
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn btn-ghost btn-circle avatar"
+              >
+                <div className="w-10 rounded-full">
+                  <img
+                    alt="Tailwind CSS Navbar component"
+                    src={user?.photoURL}
+                  />
+                </div>
+              </div>
+              <ul
+                tabIndex={0}
+                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+              >
+                <li>
+                  <a className="justify-between">
+                    Profile
+                    <span className="badge">New</span>
+                  </a>
+                </li>
+                <li>
+                  <a>Settings</a>
+                </li>
+                <li>
+                  <a>Logout</a>
+                </li>
+              </ul>
+            </div>
+          ) : (
+            <Link to="/login" className="btn bg-[#F9A51A]">
+              Login
+            </Link>
+          )}
         </div>
       </div>
     </nav>

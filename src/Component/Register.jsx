@@ -4,7 +4,7 @@ import { AuthProvider } from "../Context/CreateContext";
 
 const Register = () => {
   const [nameError, setNameError] = useState("");
-  const {registerUser, setUser} = use(AuthProvider)
+  const {registerUser, setUser, signInWithGoogle,} = use(AuthProvider)
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -27,6 +27,16 @@ const Register = () => {
     })
 
   };
+
+          const handleWithGoogle = () => {
+            signInWithGoogle()
+            .then(result => {
+                const currentUser = result.user;
+                setUser(currentUser)
+            }).catch(error => {
+                console.log(error.message)
+            })
+        }
 
   return (
     <div className="flex justify-center items-center mt-16">
@@ -76,7 +86,7 @@ const Register = () => {
             <button type="submit" className="btn btn-neutral mt-4">
               Register
             </button>
-            <button type="submit" className="btn mt-4 px-1 rounded-full"><img className="w-6" src="images/google.png" alt="" />
+            <button onClick={handleWithGoogle} type="button" className="btn mt-4 px-1 rounded-full"><img className="w-6" src="images/google.png" alt="" />
               <p>SingUp with google</p>
             </button>
             <button type="submit" className="btn mt-4 px-1 rounded-full"><img className="w-6" src="images/fb.png" alt="" />

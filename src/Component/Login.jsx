@@ -4,7 +4,7 @@ import { AuthProvider } from '../Context/CreateContext';
 
 const Login = () => {
         const [error, setError] = useState("")
-        const {loginUser, setUser} = use(AuthProvider)
+        const {loginUser, setUser, signInWithGoogle} = use(AuthProvider)
 
         const handleLogin = e => {
             e.preventDefault()
@@ -15,6 +15,16 @@ const Login = () => {
             loginUser(email, password)
             .then(result => {
                 const currentUser = result.user
+                setUser(currentUser)
+            }).catch(error => {
+                setError(error.message)
+            })
+        }
+
+        const handleWithGoogle = () => {
+            signInWithGoogle()
+            .then(result => {
+                const currentUser = result.user;
                 setUser(currentUser)
             }).catch(error => {
                 setError(error.message)
@@ -36,10 +46,10 @@ const Login = () => {
             </div>
             {error && <p className="text-xs text-red-500">{error}</p>}
             <button type="submit" className="btn btn-neutral mt-4">Login</button>
-                        <button type="submit" className="btn mt-4 px-1 rounded-full"><img className="w-6" src="images/google.png" alt="" />
-              <p>SingUp with google</p>
+                        <button onClick={handleWithGoogle} type="button" className="btn mt-4 px-1 rounded-full"><img className="w-6" src="images/google.png" alt="" />
+              <p>Continue with google</p>
             </button>
-            <button type="submit" className="btn mt-4 px-1 rounded-full"><img className="w-6" src="images/fb.png" alt="" />
+            <button type="button" className="btn mt-4 px-1 rounded-full"><img className="w-6" src="images/fb.png" alt="" />
               <p>Continue with Google</p>
             </button>
             <p className="font-semibold text-center pt-5">Don’t Have An Account ? <Link className="text-indigo-500" to="/register">Register</Link></p>
